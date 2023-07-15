@@ -26,12 +26,14 @@ for i in range(25,26):
 
     JobTitleResponse = responseTitle["choices"][0]["message"]["content"] # type: ignore
     time.sleep(1)
-
+    
+#Generierung: Zweite Anfrage
     content1 = ("Identifiziere Skills in der Jobbeschreibung. Beschreibe die gefunden Skills mit 1-3 Schlagwörtern die genau in dieser Konstellation in dem Text zu finden sind und trenne sie mit Kommata. Ignoriere Vorteile im Unternehmen wie Urlaub oder Arbeitszeiten. Nutze dafür die folgende Jobbeschreibung:")
     content1 = content1 + data [i][2]
     responseSkill = openai.ChatCompletion.create(
       model="gpt-3.5-turbo",
       messages=[
+        #hier kann man dem system vor der Frage einige Vorgaben stellen
         {"role": "system", "content": "Du beantwortest Anfragen nur mit dem exakt gleichen Wortlaut wie sie in der Anfrage stehen. Aufzählungen mit Bindestrich dürfen nicht ausgeschrieben werden. Die Antwort soll ohne Einleitung und Überschrift erfolgen. Ignoriere Vorteile im Unternehmen wie Urlaub oder Arbeitszeiten."},
         {"role": "user", "content": content1}
       ],
