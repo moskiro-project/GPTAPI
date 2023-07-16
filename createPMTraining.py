@@ -13,7 +13,7 @@ j = 0
 
 #Generierung: Erste Anfrage
 for i in data:
-    j =+1
+    j = j+1
     try:
         content = ("Bereinige den folgenden Jobtitel von allen unnötigen Informationen:")
         content = content + i[1]
@@ -46,11 +46,11 @@ for i in data:
        print(f"OpenAI API request failed to connect: {e}")
        continue
 
-    output.append((JobTitleResponse,i[2]))
-    print(j, "\n") 
+    output.append((i[1],JobTitleResponse,i[2]))
+    print(j) 
     
 
-df = pd.DataFrame(output, columns=["Jobtitle","Description"])
+df = pd.DataFrame(output, columns=["JobTitle", "NewJobTitle","Description"])
 
 with pd.ExcelWriter("PMTraining.xlsx") as writer:
     df.to_excel(writer)
