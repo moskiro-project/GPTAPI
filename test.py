@@ -46,7 +46,7 @@ for i in range(2):
     time.sleep(1)  
     
 
-df = pd.DataFrame(output, columns=["Jobtitle","Describtion","Jobskills"])
+df = pd.DataFrame(output, columns=["Jobtitle","Description","Jobskills"])
 print(df)
 
 with pd.ExcelWriter("example.xlsx") as writer:
