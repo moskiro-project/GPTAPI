@@ -66,6 +66,6 @@ for i in range(99):
 
 df = pd.DataFrame(output, columns=["Jobtitle","Description","Jobskills"])
 
-with pd.ExcelWriter("example.xlsx") as writer:
+with pd.ExcelWriter("output.xlsx") as writer:
     df.to_excel(writer)
 
