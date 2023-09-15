@@ -13,7 +13,6 @@ j = 0
 
 #Generierung: Erste Anfrage
 for i in data:
-    j = j+1
     try:
         content = ("Bereinige den folgenden Jobtitel von allen unnötigen Informationen:")
         content = content + i[1]
@@ -47,7 +46,6 @@ for i in data:
        continue
 
     output.append((i[1],JobTitleResponse,i[2]))
-    print(j) 
     
 
 df = pd.DataFrame(output, columns=["JobTitle", "NewJobTitle","Description"])
