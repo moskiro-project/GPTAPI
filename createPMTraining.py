@@ -27,7 +27,9 @@ for i in data:
 
         JobTitleResponse = responseTitle["choices"][0]["message"]["content"] # type: ignore
         time.sleep(1)
+        #Warten um die API nicht zu überlasten - begrenzte Anzahl an Anfragen pro Minute
 
+    #Errorhandling
     except openai.error.Timeout as e: # type: ignore
       #Handle timeout error
       print(f"OpenAI API request timed out: {e}")
@@ -47,8 +49,9 @@ for i in data:
 
     output.append((i[1],JobTitleResponse,i[2]))
     
-
+#Umwandeln der Liste in Dataframe
 df = pd.DataFrame(output, columns=["JobTitle", "NewJobTitle","Description"])
 
 with pd.ExcelWriter("PMTraining.xlsx") as writer:
+     #Abspeichern des Dataframes in Datei
     df.to_excel(writer)
