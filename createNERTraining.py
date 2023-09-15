@@ -16,13 +16,13 @@ output = []
 for i in data:
     try:
         content1 = ("Identifiziere Skills in der Jobbeschreibung. Beschreibe die gefunden Skills mit 1-3 Schlagwörtern die genau in dieser Konstellation in dem Text zu finden sind, trenne sie mit Kommata und verwende keine Überschriften oder Einleitungsn. Ignoriere Vorteile im Unternehmen wie Urlaub oder Arbeitszeiten. Analysiere die folgende Jobbeschreibung:")
-        #content1 = ("Verhalte dich als wärst du ein NER das Skills aus Texten erkennt. Erkenne alle angegebenen Skills in dem folgenden Text und gebe die Wörter in Form einer Liste wieder die durch Kommata getrennt wird. Wörter die das Arbeitsumfeld oder Arbeitsbedingungen betreffen sollen nicht ausgegeben werden: ")
+        #Generierung der Anfrage
         content1 = content1 + i[2]
         responseSkill = openai.ChatCompletion.create(
           model="gpt-3.5-turbo",
           messages=[
             {"role": "system", "content": "Du beantwortest Anfragen nur mit dem exakt gleichen Wortlaut wie sie in der Jobbeschreibung stehen. Aufzählungen mit Bindestrich dürfen nicht ausgeschrieben werden. Ignoriere Vorteile im Unternehmen wie Urlaub oder Arbeitszeiten."},
-            #{"role": "system", "content": "Arbeitsbedinungen und das Arbeitsumfeld sind keine Fähigkeiten die vom NER erfasst werden"},
+            #Mehr Informationen an das System um den Output so praktikabel wie möglich zu gestalten,
             {"role": "user", "content": content1}
           ],
           temperature = 0.5
@@ -31,7 +31,9 @@ for i in data:
         JobSkillResponse = responseSkill["choices"][0]["message"]["content"] # type: ignore
         output.append((i[1],i[2],JobSkillResponse))
         time.sleep(1)
-
+        #Warten um die API nicht zu überlasten - begrenzte Anzahl an Anfragen pro Minute
+        
+#Errorhandling
     except openai.error.Timeout as e: # type: ignore
       #Handle timeout error
       print(f"OpenAI API request timed out: {e}")
@@ -51,9 +53,10 @@ for i in data:
 
     print(i, "\n") 
     
-
+#Umwandeln der Liste in Dataframe
 df = pd.DataFrame(output, columns=["Jobtitle","Description","Jobskills"])
 
 with pd.ExcelWriter("output.xlsx") as writer:
+    #Abspeichern des Dataframes in Datei
     df.to_excel(writer)
 
