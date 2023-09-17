@@ -56,7 +56,7 @@ for i in data:
 #Umwandeln der Liste in Dataframe
 df = pd.DataFrame(output, columns=["Jobtitle","Description","Jobskills"])
 
-with pd.ExcelWriter("output.xlsx") as writer:
+with pd.ExcelWriter("NER_output.xlsx") as writer:
     #Abspeichern des Dataframes in Datei
     df.to_excel(writer)
 
